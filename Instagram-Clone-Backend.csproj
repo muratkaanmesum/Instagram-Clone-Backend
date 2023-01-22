@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data Access\" />
+    <Folder Include="Data Access\UserDal\" />
   </ItemGroup>
 
 </Project>
