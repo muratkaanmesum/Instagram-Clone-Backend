@@ -2,14 +2,15 @@
 
 namespace Instagram_Clone_Backend.Models
 {
-    public class Post:IEntity
+    public class Post : IEntity
     {
 
-        public int  Id { get; set; }
+        public int Id { get; set; }
         [ForeignKey("UserProfile")]
-        public int UserId { get; set; }
+        public int UserProfileId { get; set; }
         public string? Location { get; set; }
-        public List<UserProfile>? Likes { get; set; }
+        public string? Caption { get; set; }
+        public List<Like>? Likes { get; set; }
 
     }
 }

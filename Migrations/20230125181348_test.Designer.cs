@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Instagram_Clone_Backend.Migrations
 {
     [DbContext(typeof(InstagramCloneContext))]
-    [Migration("20230125123307_test1")]
-    partial class test1
+    [Migration("20230125181348_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,11 +42,12 @@ namespace Instagram_Clone_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserProfileId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("ProfileId");
+                    b.HasIndex("UserProfileId");
 
                     b.ToTable("Comments");
                 });
@@ -62,10 +63,12 @@ namespace Instagram_Clone_Backend.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("UserProfileId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserProfileId");
 
                     b.ToTable("Posts");
                 });
@@ -152,38 +155,41 @@ namespace Instagram_Clone_Backend.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("PostUserProfile", b =>
+            modelBuilder.Entity("Like", b =>
                 {
-                    b.Property<int>("LikesId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("PostsId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.HasKey("LikesId", "PostsId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("PostsId");
+                    b.HasKey("Id");
 
-                    b.ToTable("PostUserProfile");
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Like");
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Comment", b =>
                 {
-                    b.HasOne("Instagram_Clone_Backend.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Instagram_Clone_Backend.Models.UserProfile", "Profile")
+                    b.HasOne("Instagram_Clone_Backend.Models.UserProfile", null)
                         .WithMany("Comment")
-                        .HasForeignKey("ProfileId")
+                        .HasForeignKey("UserProfileId");
+                });
+
+            modelBuilder.Entity("Instagram_Clone_Backend.Models.Post", b =>
+                {
+                    b.HasOne("Instagram_Clone_Backend.Models.UserProfile", null)
+                        .WithMany("Posts")
+                        .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Story", b =>
@@ -202,19 +208,18 @@ namespace Instagram_Clone_Backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PostUserProfile", b =>
+            modelBuilder.Entity("Like", b =>
                 {
-                    b.HasOne("Instagram_Clone_Backend.Models.UserProfile", null)
-                        .WithMany()
-                        .HasForeignKey("LikesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Instagram_Clone_Backend.Models.Post", null)
-                        .WithMany()
-                        .HasForeignKey("PostsId")
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Instagram_Clone_Backend.Models.Post", b =>
+                {
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.User", b =>
@@ -226,6 +231,8 @@ namespace Instagram_Clone_Backend.Migrations
             modelBuilder.Entity("Instagram_Clone_Backend.Models.UserProfile", b =>
                 {
                     b.Navigation("Comment");
+
+                    b.Navigation("Posts");
 
                     b.Navigation("Stories");
                 });

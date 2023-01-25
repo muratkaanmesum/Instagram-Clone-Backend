@@ -1,5 +1,6 @@
 using Instagram_Clone_Backend.Contexts;
 using Instagram_Clone_Backend.Data_Access.CommentDal;
+using Instagram_Clone_Backend.Data_Access.PostDal;
 using Instagram_Clone_Backend.Data_Access.UserDal;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,10 +22,11 @@ namespace Instagram_Clone_Backend
                 op.UseSqlServer(
                     "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Instagram_Clone;Integrated Security=True;"));
             builder.Services.AddSingleton<IUserDal, UserDal>();
+            builder.Services.AddSingleton<IPostDal, PostDal>();
             builder.Services.AddSingleton<ICommentDal, CommentDal>();
             var app = builder.Build();
 
-            
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

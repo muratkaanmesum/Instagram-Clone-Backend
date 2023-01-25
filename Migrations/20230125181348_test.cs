@@ -9,20 +9,6 @@ namespace Instagram_Clone_Backend.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -67,8 +53,10 @@ namespace Instagram_Clone_Backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserProfileId = table.Column<int>(type: "int", nullable: false),
-                    UserComment = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ProfileId = table.Column<int>(type: "int", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false),
+                    UserComment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserProfileId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,29 +65,24 @@ namespace Instagram_Clone_Backend.Migrations
                         name: "FK_Comments_Profiles_UserProfileId",
                         column: x => x.UserProfileId,
                         principalTable: "Profiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostUserProfile",
+                name: "Posts",
                 columns: table => new
                 {
-                    LikesId = table.Column<int>(type: "int", nullable: false),
-                    PostsId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserProfileId = table.Column<int>(type: "int", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostUserProfile", x => new { x.LikesId, x.PostsId });
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostUserProfile_Posts_PostsId",
-                        column: x => x.PostsId,
-                        principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PostUserProfile_Profiles_LikesId",
-                        column: x => x.LikesId,
+                        name: "FK_Posts_Profiles_UserProfileId",
+                        column: x => x.UserProfileId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -124,15 +107,40 @@ namespace Instagram_Clone_Backend.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Like",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PostId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Like", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Like_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserProfileId",
                 table: "Comments",
                 column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostUserProfile_PostsId",
-                table: "PostUserProfile",
-                column: "PostsId");
+                name: "IX_Like_PostId",
+                table: "Like",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_UserProfileId",
+                table: "Posts",
+                column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Profiles_UserId",
@@ -152,7 +160,7 @@ namespace Instagram_Clone_Backend.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "PostUserProfile");
+                name: "Like");
 
             migrationBuilder.DropTable(
                 name: "Stories");
