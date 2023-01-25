@@ -21,7 +21,7 @@ namespace Instagram_Clone_Backend.Controllers
         [HttpGet("/GetAll")]
         public IActionResult GetAllUsers()
         {
-            var list = _userDal.GetList();
+            var list = _userDal.GetAllData();
             return Ok(list);
         }
 
