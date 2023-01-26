@@ -4,6 +4,7 @@ using Instagram_Clone_Backend.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Instagram_Clone_Backend.Migrations
 {
     [DbContext(typeof(InstagramCloneContext))]
-    partial class InstagramCloneContextModelSnapshot : ModelSnapshot
+    [Migration("20230126161353_test7")]
+    partial class test7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,11 +213,13 @@ namespace Instagram_Clone_Backend.Migrations
 
             modelBuilder.Entity("Like", b =>
                 {
-                    b.HasOne("Instagram_Clone_Backend.Models.Post", null)
+                    b.HasOne("Instagram_Clone_Backend.Models.Post", "Post")
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Post", b =>

@@ -7,22 +7,26 @@ namespace Instagram_Clone_Backend.Contexts
     {
         public DbSet<User> Users { get; set; }
         public DbSet<UserProfile> Profiles { get; set; }
-        public DbSet<Comment> Comments{ get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Story> Stories { get; set; }
 
-        public InstagramCloneContext(DbContextOptions<InstagramCloneContext>options)
+        public InstagramCloneContext(DbContextOptions<InstagramCloneContext> options)
         {
         }
 
         public InstagramCloneContext()
         {
-            
+
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
                 "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Instagram_Clone;Integrated Security=True;");
+        }
+        override protected void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Instagram_Clone_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/{controller}")]
     public class PostController : Controller
     {
         private IPostDal _PostDal;

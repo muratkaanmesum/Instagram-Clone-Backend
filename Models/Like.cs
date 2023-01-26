@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Instagram_Clone_Backend.Models;
 
 public class Like
 {
@@ -6,5 +7,6 @@ public class Like
     [ForeignKey("Posts")]
     public int PostId { get; set; }
     [ForeignKey("UserProfile")]
-    public int UserId { get; set; }
+    public int ProfileId { get; set; }
+
 }
