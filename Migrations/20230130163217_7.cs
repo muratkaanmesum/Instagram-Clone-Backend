@@ -4,7 +4,7 @@
 
 namespace Instagram_Clone_Backend.Migrations
 {
-    public partial class test8 : Migration
+    public partial class _7 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

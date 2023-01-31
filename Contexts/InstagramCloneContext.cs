@@ -24,9 +24,7 @@ namespace Instagram_Clone_Backend.Contexts
             optionsBuilder.UseSqlServer(
                 "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Instagram_Clone;Integrated Security=True;");
         }
-        override protected void OnModelCreating(ModelBuilder modelBuilder)
-        {
 
-        }
     }
 }
+

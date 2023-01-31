@@ -4,23 +4,23 @@
 
 namespace Instagram_Clone_Backend.Migrations
 {
-    public partial class test2 : Migration
+    public partial class _2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "UserProfileId",
-                table: "Like");
+            migrationBuilder.AddColumn<int>(
+                name: "CommentedId",
+                table: "Profiles",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "UserProfileId",
-                table: "Like",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+            migrationBuilder.DropColumn(
+                name: "CommentedId",
+                table: "Profiles");
         }
     }
 }

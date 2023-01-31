@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Instagram_Clone_Backend.Migrations
 {
     [DbContext(typeof(InstagramCloneContext))]
-    [Migration("20230125182644_test4")]
-    partial class test4
+    [Migration("20230129190855_6")]
+    partial class _6
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,9 +35,6 @@ namespace Instagram_Clone_Backend.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProfileId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserComment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -46,6 +43,8 @@ namespace Instagram_Clone_Backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserProfileId");
 
@@ -169,20 +168,28 @@ namespace Instagram_Clone_Backend.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserProfileId")
+                    b.Property<int?>("UserProfileId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PostId");
 
+                    b.HasIndex("UserProfileId");
+
                     b.ToTable("Like");
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Comment", b =>
                 {
+                    b.HasOne("Instagram_Clone_Backend.Models.Post", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Instagram_Clone_Backend.Models.UserProfile", null)
-                        .WithMany("Comment")
+                        .WithMany("Comments")
                         .HasForeignKey("UserProfileId");
                 });
 
@@ -218,10 +225,16 @@ namespace Instagram_Clone_Backend.Migrations
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Instagram_Clone_Backend.Models.UserProfile", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("UserProfileId");
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Post", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Likes");
                 });
 
@@ -233,7 +246,9 @@ namespace Instagram_Clone_Backend.Migrations
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.UserProfile", b =>
                 {
-                    b.Navigation("Comment");
+                    b.Navigation("Comments");
+
+                    b.Navigation("Likes");
 
                     b.Navigation("Posts");
 

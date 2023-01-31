@@ -11,8 +11,13 @@ public class UserDal : EFentityRepository<User, InstagramCloneContext>, IEFentit
         using var context = new InstagramCloneContext();
         return context.Users.Include(e => e.UserProfile)
             .ThenInclude(e => e.Posts)
+            .ThenInclude(p => p.Likes)
             .Include(e => e.UserProfile)
-            .ThenInclude(e => e.Comment)
+            .ThenInclude(e => e.Comments)
+            .Include(e => e.UserProfile)
+            .ThenInclude(p => p.Likes)
+            .Include(e => e.UserProfile)
+            .ThenInclude(p => p.Stories)
             .ToList();
     }
 }
