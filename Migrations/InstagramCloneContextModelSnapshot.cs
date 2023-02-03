@@ -46,7 +46,7 @@ namespace Instagram_Clone_Backend.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Post", b =>
@@ -70,7 +70,7 @@ namespace Instagram_Clone_Backend.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Story", b =>
@@ -92,7 +92,7 @@ namespace Instagram_Clone_Backend.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("Stories");
+                    b.ToTable("Stories", (string)null);
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.User", b =>
@@ -113,7 +113,7 @@ namespace Instagram_Clone_Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.UserProfile", b =>
@@ -152,7 +152,7 @@ namespace Instagram_Clone_Backend.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Profiles", (string)null);
                 });
 
             modelBuilder.Entity("Like", b =>
@@ -175,7 +175,7 @@ namespace Instagram_Clone_Backend.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("Like");
+                    b.ToTable("Like", (string)null);
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Comment", b =>

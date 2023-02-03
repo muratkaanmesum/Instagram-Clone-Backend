@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Data Access\CommentDal\" />
+    <Folder Include="Data Access\LikeDal\" />
     <Folder Include="Data Access\PostDal\" />
     <Folder Include="Data Access\UserDal\" />
   </ItemGroup>
