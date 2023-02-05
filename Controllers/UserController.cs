@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Instagram_Clone_Backend.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("/api/[Controller]")]
     public class UserController : ControllerBase

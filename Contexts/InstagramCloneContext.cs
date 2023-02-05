@@ -25,6 +25,20 @@ namespace Instagram_Clone_Backend.Contexts
                 "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Instagram_Clone;Integrated Security=True;");
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Comment>().
+                HasOne(c => c.UserProfile).
+                WithMany(u => u.Comments)
+                .HasForeignKey(c => c.UserProfileId).
+                OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.UserProfile)
+                .WithMany(u => u.Likes)
+                .HasForeignKey(l => l.UserProfileId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+        }
     }
 }
 

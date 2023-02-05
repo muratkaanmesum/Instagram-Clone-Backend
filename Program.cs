@@ -31,6 +31,7 @@ namespace Instagram_Clone_Backend
                 op.UseSqlServer(
                     "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Instagram_Clone;Integrated Security=True;"));
             builder.Services.AddSignalR();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddSingleton<IUserDal, UserDal>();
             builder.Services.AddSingleton<IPostDal, PostDal>();
             builder.Services.AddSingleton<ILikeDal, LikeDal>();

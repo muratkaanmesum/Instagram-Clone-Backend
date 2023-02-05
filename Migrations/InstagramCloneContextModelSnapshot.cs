@@ -30,6 +30,9 @@ namespace Instagram_Clone_Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
@@ -37,7 +40,7 @@ namespace Instagram_Clone_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserProfileId")
+                    b.Property<int?>("UserProfileId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -166,10 +169,13 @@ namespace Instagram_Clone_Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("CreateDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserProfileId")
+                    b.Property<int?>("UserProfileId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -189,11 +195,11 @@ namespace Instagram_Clone_Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Instagram_Clone_Backend.Models.UserProfile", null)
+                    b.HasOne("Instagram_Clone_Backend.Models.UserProfile", "UserProfile")
                         .WithMany("Comments")
-                        .HasForeignKey("UserProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserProfileId");
+
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Post", b =>
@@ -231,9 +237,7 @@ namespace Instagram_Clone_Backend.Migrations
 
                     b.HasOne("Instagram_Clone_Backend.Models.UserProfile", "UserProfile")
                         .WithMany("Likes")
-                        .HasForeignKey("UserProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserProfileId");
 
                     b.Navigation("UserProfile");
                 });
