@@ -15,16 +15,21 @@ public class CommentDal : EFentityRepository<Comment, InstagramCloneContext>, IC
         return user.Comments.ToList();
     }
 
-    public new Comment Add(Comment comment)
+    public async Task<Comment> DeleteWithIdAsync(int id)
     {
-        using var context = new InstagramCloneContext();
-        //var user = context.Profiles.Find(comment.Profile.Id);
-        //if (user == null)
-        //    return new Comment();
-        context.Comments.Add(comment);
-        context.SaveChanges();
+        await using var context = new InstagramCloneContext();
+        var comment = await context.Comments.FirstOrDefaultAsync(p => p.Id == id);
+        context.Entry(comment).State = EntityState.Deleted;
+        await context.SaveChangesAsync();
         return comment;
     }
 
+    public async Task<Comment> UpdateAsync(Comment comment)
+    {
+        await using var context = new InstagramCloneContext();
+        context.Entry(comment).State = EntityState.Modified;
+        await context.SaveChangesAsync();
+        return comment;
+    }
 
 }

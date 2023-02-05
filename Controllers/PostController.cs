@@ -32,9 +32,9 @@ namespace Instagram_Clone_Backend.Controllers
             return Ok(post);
         }
         [HttpGet("GetPosts")]
-        public IActionResult GetPosts()
+        public async Task<IActionResult>GetPosts()
         {
-            var posts = _PostDal.GetList();
+            var posts = await  _PostDal.GetPostListAsync();
             return Ok(posts);
         }
         [HttpGet("GetUserPost")]
@@ -69,21 +69,32 @@ namespace Instagram_Clone_Backend.Controllers
             return Ok(comments);
         }
         [HttpPost("AddComment")]
-        public IActionResult AddComment([FromBody] Comment comment)
+        public async Task<IActionResult> AddComment([FromBody] CommentDto comment, [FromHeader]int postId ,[FromHeader]int userProfileId)
         {
-            var addedComment = _iCommentDal.Add(comment);
+            var mappedComment = _mapper.Map<Comment>(comment);
+            if(!await _PostDal.DoesExitsAsync(postId))
+                return NotFound();
+            mappedComment.UserProfileId = userProfileId;
+            mappedComment.PostId = postId;
+            var addedComment = await _iCommentDal.Add(mappedComment);
             return Ok(addedComment);
         }
         [HttpDelete("DeleteComment")]
-        public IActionResult DeleteComment([FromBody]Comment comment)
+        public async Task<IActionResult> DeleteWithIdAsync([FromHeader]int commentId)
         {
-            _iCommentDal.Delete(comment);
+            if(!await _iCommentDal.DoesExitsAsync(commentId))
+                return NotFound();
+
+            var comment = await _iCommentDal.DeleteWithIdAsync(commentId);
             return Ok(comment);
         }
         [HttpPut("UpdateComment")]
-        public IActionResult UpdateComment([FromBody] Comment comment)
+        public async Task<IActionResult> UpdateComment([FromBody] CommentDto comment, [FromHeader] int commentId, [FromHeader]int postId)
         {
-            var updatedComment = _iCommentDal.Update(comment);
+            var mappedComment = _mapper.Map<Comment>(comment);
+            mappedComment.Id = commentId;
+            mappedComment.PostId = postId;
+            var updatedComment = await _iCommentDal.UpdateAsync(mappedComment);
             return Ok(updatedComment);
         }
         [HttpPost("AddLike")]

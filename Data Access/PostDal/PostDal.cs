@@ -10,6 +10,14 @@ public class PostDal:EFentityRepository<Post,InstagramCloneContext>,IPostDal
     public async Task<List<Post>> GetPostListAsync(Expression<Func<Post, bool>>? filter = null)
     {
         await using var context = new InstagramCloneContext();
+        if (filter == null)
+        {
+            var allPosts = await context.Posts
+                .Include(post => post.Likes)
+                .Include(p => p.Comments)
+                .ToListAsync();
+            return allPosts;
+        }
         var posts = await context.Posts.Where(filter)
             .Include(post => post.Likes)
             .Include(p => p.Comments)

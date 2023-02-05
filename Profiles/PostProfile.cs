@@ -9,5 +9,6 @@ public class PostProfile:Profile
     public PostProfile()
     {
         CreateMap<PostDto, Post>();
+        CreateMap<CommentDto,Comment>();
     }
 }

@@ -59,8 +59,9 @@ public class EFentityRepository<TEntity,TContext>:IEFentityRepository<TEntity>
 
     public async Task<bool> DoesExitsAsync(int id)
     {
-        using var context = new TContext();
+        await using var context = new TContext();
         var list  =await context.Set<TEntity>().SingleOrDefaultAsync(t => t.Id == id);
         return list != null;
     }
+    
 }
