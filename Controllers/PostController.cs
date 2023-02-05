@@ -1,6 +1,8 @@
-﻿using Instagram_Clone_Backend.Data_Access.CommentDal;
+﻿using AutoMapper;
+using Instagram_Clone_Backend.Data_Access.CommentDal;
 using Instagram_Clone_Backend.Data_Access.LikeDal;
 using Instagram_Clone_Backend.Data_Access.PostDal;
+using Instagram_Clone_Backend.Dto_s;
 using Instagram_Clone_Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,20 +12,23 @@ namespace Instagram_Clone_Backend.Controllers
     [Route("api/[controller]")]
     public class PostController : ControllerBase
     {
-        private IPostDal _PostDal;
-        private ICommentDal _iCommentDal;
-        private ILikeDal _LikeDal;
-        public PostController(IPostDal postDal, ICommentDal iCommentDal,ILikeDal likeDal)
+        private readonly IPostDal _PostDal;
+        private readonly ICommentDal _iCommentDal;
+        private readonly ILikeDal _LikeDal;
+        private readonly IMapper _mapper;
+        public PostController(IMapper mapper ,IPostDal postDal, ICommentDal iCommentDal,ILikeDal likeDal)
         {
+            _mapper = mapper;
             _PostDal = postDal;
             _iCommentDal = iCommentDal;
             _LikeDal = likeDal;
 
         }
         [HttpPost("AddPost")]
-        public IActionResult AddPost([FromBody] Post post)
+        public IActionResult AddPost([FromBody] PostDto post)
         {
-            _PostDal.Add(post);
+            var mappedPost = _mapper.Map<Post>(post);
+            _PostDal.Add(mappedPost);
             return Ok(post);
         }
         [HttpGet("GetPosts")]

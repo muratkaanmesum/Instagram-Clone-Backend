@@ -30,11 +30,11 @@ public class EFentityRepository<TEntity,TContext>:IEFentityRepository<TEntity>
         return list.ToList();
     }
 
-    public TEntity Add(TEntity entity)
+    public async Task<TEntity> Add(TEntity entity)
     {
         using var context = new TContext();
-        context.Set<TEntity>().Add(entity);
-        context.SaveChanges();
+        await context.Set<TEntity>().AddAsync(entity);
+        await context.SaveChangesAsync();
         return entity;
     }
 
@@ -47,7 +47,6 @@ public class EFentityRepository<TEntity,TContext>:IEFentityRepository<TEntity>
         context.Entry(entity).State = EntityState.Modified;
         context.SaveChanges();
         return entity;
-
     }
 
     public TEntity Delete(TEntity entity)
@@ -56,5 +55,12 @@ public class EFentityRepository<TEntity,TContext>:IEFentityRepository<TEntity>
         context.Entry(entity).State = EntityState.Deleted;
         context.SaveChanges();
         return entity;
+    }
+
+    public async Task<bool> DoesExitsAsync(int id)
+    {
+        using var context = new TContext();
+        var list  =await context.Set<TEntity>().SingleOrDefaultAsync(t => t.Id == id);
+        return list != null;
     }
 }

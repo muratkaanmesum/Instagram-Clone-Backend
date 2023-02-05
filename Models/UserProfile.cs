@@ -18,7 +18,7 @@ namespace Instagram_Clone_Backend.Models
         public string? Bio { get; set; }
         public string? Email { get; set; }
         public string? Gender { get; set; }
-        public string? ImageUrl { get; set; }
+        public string? ImageUrl { get; set; } = string.Empty;
         public ICollection<Post>? Posts { get; set; }
         public ICollection<Comment>? Comments { get; set; }
         public ICollection<Like>? Likes { get; set; }

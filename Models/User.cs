@@ -4,6 +4,10 @@ namespace Instagram_Clone_Backend.Models;
 
 public class User:IEntity
 {
+    public User()
+    {
+        UserProfile = new UserProfile();
+    }
     [Key]
     public int Id { get; set; }
     [Required] 

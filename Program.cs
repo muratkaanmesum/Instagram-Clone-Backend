@@ -29,7 +29,7 @@ namespace Instagram_Clone_Backend
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<InstagramCloneContext>(op =>
                 op.UseSqlServer(
-                    "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Instagram_Clone;Integrated Security=True;"));
+                    builder.Configuration["ConnectionStrings:InstagramDB"]));
             builder.Services.AddSignalR();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddSingleton<IUserDal, UserDal>();
