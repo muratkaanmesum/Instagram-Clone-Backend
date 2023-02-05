@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Instagram_Clone_Backend.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
-    public class PostController : Controller
+    public class PostController : ControllerBase
     {
         private IPostDal _PostDal;
         private ICommentDal _iCommentDal;
@@ -50,10 +51,10 @@ namespace Instagram_Clone_Backend.Controllers
             return Ok(post);
         }
         [HttpGet("GetUserComments")]
-        public IActionResult GetUserComments([FromHeader] int id)
+        public async Task<IActionResult> GetUserComments([FromHeader] int id)
         {
 
-            var comments = _iCommentDal.GetUserComment(id);
+            var comments = await _iCommentDal.GetUserCommentAsync(id);
             return Ok(comments);
         }
         [HttpPost("AddComment")]

@@ -7,4 +7,6 @@ public class Like:IEntity
     public int PostId { get; set; }
     [ForeignKey("UserProfile")]
     public int UserProfileId { get; set; }
+
+    public UserProfile UserProfile { get;set; }
 }

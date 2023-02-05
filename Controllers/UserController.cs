@@ -1,11 +1,14 @@
 ﻿using Instagram_Clone_Backend.Data_Access.UserDal;
 using Instagram_Clone_Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Instagram_Clone_Backend.Controllers
 {
+    [Authorize]
+    [ApiController]
     [Route("/api/[Controller]")]
-    public class UserController : Controller
+    public class UserController : ControllerBase
     {
         private IUserDal _userDal;
         public UserController(IUserDal userDal)

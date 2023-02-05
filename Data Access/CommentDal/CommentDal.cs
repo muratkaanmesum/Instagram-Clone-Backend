@@ -6,13 +6,13 @@ namespace Instagram_Clone_Backend.Data_Access.CommentDal;
 
 public class CommentDal : EFentityRepository<Comment, InstagramCloneContext>, ICommentDal
 {
-    public List<Comment> GetUserComment(int id)
+    public async Task<IEnumerable<Comment>> GetUserCommentAsync(int id)
     {
         using var context = new InstagramCloneContext();
-        var user = context.Profiles.Include(p => p.Comments).FirstOrDefault(user => user.Id == id);
+        var user = await context.Profiles.Include(p => p.Comments).FirstOrDefaultAsync(user => user.Id == id);
         if (user == null)
             return new List<Comment>();
-        return user.Comments?.ToList() ?? new List<Comment>();
+        return user.Comments.ToList();
     }
 
     public new Comment Add(Comment comment)
@@ -25,4 +25,6 @@ public class CommentDal : EFentityRepository<Comment, InstagramCloneContext>, IC
         context.SaveChanges();
         return comment;
     }
+
+
 }

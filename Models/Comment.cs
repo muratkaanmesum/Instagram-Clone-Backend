@@ -8,6 +8,6 @@ public class Comment : IEntity
     public int Id { get; set; }
     public int PostId { get; set; }
     public string UserComment { get; set; } = null!;
-    public int? UserProfileId { get; set; }
-
+    [Required]
+    public int UserProfileId { get; set; }
 }
