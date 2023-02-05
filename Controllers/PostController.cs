@@ -38,22 +38,28 @@ namespace Instagram_Clone_Backend.Controllers
             return Ok(posts);
         }
         [HttpGet("GetUserPost")]
-        public IActionResult GetUserPosts([FromHeader]int id)
+        public async Task<IActionResult> GetUserPosts([FromHeader]int id)
         {
-            var userPosts = _PostDal.GetPostList(post => post.UserProfileId == id);
+            var userPosts = await _PostDal.GetPostListAsync(post => post.UserProfileId == id);
             return Ok(userPosts);
         }
         [HttpDelete("RemovePost")]
-        public IActionResult RemovePost([FromBody]Post post)
+        public async Task<IActionResult> RemovePost([FromHeader]int id)
         {
-            _PostDal.Delete(post);
-            return Ok(post);
+            if (!await _iCommentDal.DoesExitsAsync(id))
+                return NotFound();
+            var deletedUser = await _PostDal.DeleteWithIdAsync(id);
+            return Ok(deletedUser);
         }
         [HttpPut("UpdatePost")]
-        public IActionResult UpdatePost([FromBody] Post post)
+        public async Task<IActionResult> UpdatePost([FromBody] PostDto post,int id)
         {
-            var updatedPost = _PostDal.Update(post);
-            return Ok(post);
+            if (!await _PostDal.DoesExitsAsync(id))
+                return NotFound();
+            var mappedPost = _mapper.Map<Post>(post);
+            var updatedPost = await _PostDal.UpdateAsync(mappedPost,id);
+            return Ok(updatedPost);
+
         }
         [HttpGet("GetUserComments")]
         public async Task<IActionResult> GetUserComments([FromHeader] int id)

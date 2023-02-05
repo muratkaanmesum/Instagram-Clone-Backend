@@ -5,5 +5,7 @@ namespace Instagram_Clone_Backend.Data_Access.PostDal;
 
 public interface IPostDal : IEFentityRepository<Post>
 {
-     List<Post>? GetPostList(Expression<Func<Post, bool>> filter);
+    public Task <List<Post>>? GetPostListAsync(Expression<Func<Post, bool>> filter);
+    public Task<Post> DeleteWithIdAsync(int id);
+    public Task<Post> UpdateAsync(Post post,int id);
 }
