@@ -5,6 +5,14 @@ namespace Instagram_Clone_Backend.Models
 {
     public class UserProfile : IEntity
     {
+        public UserProfile()
+        {
+            Posts = new List<Post>();
+            Comments = new List<Comment>();
+            Likes = new List<Like>();
+            Stories = new List<Story>();
+            
+        }
         [Key]
         public int Id { get; set; }
         [ForeignKey("User")]
@@ -19,10 +27,10 @@ namespace Instagram_Clone_Backend.Models
         public string? Email { get; set; }
         public string? Gender { get; set; }
         public string? ImageUrl { get; set; } = string.Empty;
-        public ICollection<Post>? Posts { get; set; }
-        public ICollection<Comment>? Comments { get; set; }
-        public ICollection<Like>? Likes { get; set; }
-        public ICollection<Story>? Stories { get; set; }
+        public ICollection<Post> Posts { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Like> Likes { get; set; }
+        public ICollection<Story> Stories { get; set; }
     }
 
 }

@@ -98,9 +98,11 @@ namespace Instagram_Clone_Backend.Controllers
             return Ok(updatedComment);
         }
         [HttpPost("AddLike")]
-        public IActionResult AddLike([FromBody] Like like)
+        public async  Task<IActionResult> AddLike([FromHeader]int postId, [FromHeader]int UserProfileId)
         {
-            _LikeDal.Add(like);
+            if (!await _PostDal.DoesExitsAsync(postId))
+                return NotFound();
+            var like = await _LikeDal.AddAsync(postId,UserProfileId);
             return Ok(like);
         }
         [HttpDelete("DeleteLike")]

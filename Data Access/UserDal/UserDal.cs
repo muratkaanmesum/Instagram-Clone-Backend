@@ -9,19 +9,13 @@ public class UserDal : EFentityRepository<User, InstagramCloneContext>, IEFentit
     public async Task<List<User> >GetAllData()
     {
         using var context = new InstagramCloneContext();
-        return await context.Users.Include(e => e.UserProfile)
-            .ThenInclude(e => e.Posts)
-            .ThenInclude(p => p.Likes)
-            .Include(e => e.UserProfile)
-            .ThenInclude(e => e.Comments)
-            .Include(e => e.UserProfile)
-            .ThenInclude(p => p.Likes)
-            .Include(e => e.UserProfile)
-            .ThenInclude(p => p.Stories)
-            .Include(e => e.UserProfile)
-            .ThenInclude(e => e.Posts)
+        var list = await context.Users.Include(u => u.UserProfile)
             .ThenInclude(p => p.Comments)
+            .Include(u => u.UserProfile)
+            .ThenInclude(p => p.Posts)
             .ToListAsync();
+            
+        return list;
     }
 
     public async Task<User>? DeleteByIdAsync(int id)

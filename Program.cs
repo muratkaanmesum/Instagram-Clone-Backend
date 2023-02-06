@@ -22,6 +22,7 @@ namespace Instagram_Clone_Backend
             {
                 o.ReturnHttpNotAcceptable = true;
                 
+                
             }).AddXmlDataContractSerializerFormatters();
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(); // you can add name it defaults to cookies
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
