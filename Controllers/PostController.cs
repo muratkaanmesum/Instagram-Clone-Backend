@@ -106,9 +106,11 @@ namespace Instagram_Clone_Backend.Controllers
             return Ok(like);
         }
         [HttpDelete("DeleteLike")]
-        public IActionResult DeleteLike([FromBody] Like like)
+        public async Task<IActionResult> DeleteLike([FromHeader] int id)
         {
-            _LikeDal.Delete(like);
+            if(await _LikeDal.DoesExitsAsync(id)!)
+                return NotFound();
+            var like = await _LikeDal.DeleteAsync(id);
             return Ok(like);
         }
     }

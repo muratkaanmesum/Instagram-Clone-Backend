@@ -1,5 +1,6 @@
 using Instagram_Clone_Backend.Contexts;
 using Instagram_Clone_Backend.Data_Access.CommentDal;
+using Instagram_Clone_Backend.Data_Access.FollowerDal;
 using Instagram_Clone_Backend.Data_Access.LikeDal;
 using Instagram_Clone_Backend.Data_Access.PostDal;
 using Instagram_Clone_Backend.Data_Access.UserDal;
@@ -37,6 +38,7 @@ namespace Instagram_Clone_Backend
             builder.Services.AddSingleton<IPostDal, PostDal>();
             builder.Services.AddSingleton<ILikeDal, LikeDal>();
             builder.Services.AddSingleton<ICommentDal, CommentDal>();
+            builder.Services.AddSingleton<IFollowerDal, FollowerDal>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -4,6 +4,7 @@ using Instagram_Clone_Backend.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Instagram_Clone_Backend.Migrations
 {
     [DbContext(typeof(InstagramCloneContext))]
-    partial class InstagramCloneContextModelSnapshot : ModelSnapshot
+    [Migration("20230206075151_tes1")]
+    partial class tes1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,32 +52,6 @@ namespace Instagram_Clone_Backend.Migrations
                     b.HasIndex("UserProfileId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Instagram_Clone_Backend.Models.Follower", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("FollowerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FollowerProfileId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserProfileId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FollowerProfileId");
-
-                    b.HasIndex("UserProfileId");
-
-                    b.ToTable("Followers");
                 });
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Post", b =>
@@ -228,24 +204,6 @@ namespace Instagram_Clone_Backend.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("Instagram_Clone_Backend.Models.Follower", b =>
-                {
-                    b.HasOne("Instagram_Clone_Backend.Models.UserProfile", "FollowerProfile")
-                        .WithMany()
-                        .HasForeignKey("FollowerProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Instagram_Clone_Backend.Models.UserProfile", "UserProfile")
-                        .WithMany("Followers")
-                        .HasForeignKey("UserProfileId")
-                        .IsRequired();
-
-                    b.Navigation("FollowerProfile");
-
-                    b.Navigation("UserProfile");
-                });
-
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Post", b =>
                 {
                     b.HasOne("Instagram_Clone_Backend.Models.UserProfile", null)
@@ -302,8 +260,6 @@ namespace Instagram_Clone_Backend.Migrations
             modelBuilder.Entity("Instagram_Clone_Backend.Models.UserProfile", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Followers");
 
                     b.Navigation("Likes");
 

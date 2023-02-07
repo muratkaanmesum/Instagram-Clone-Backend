@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Instagram_Clone_Backend.Data_Access.FollowerDal;
 using Instagram_Clone_Backend.Data_Access.UserDal;
 using Instagram_Clone_Backend.Dto_s;
 using Instagram_Clone_Backend.Models;
@@ -13,12 +14,14 @@ namespace Instagram_Clone_Backend.Controllers
     {
         private IUserDal _userDal;
         private IMapper _mapper;
-        public UserController(IUserDal userDal , IMapper mapper)
+        private IFollowerDal _followerDal;
+        public UserController(IUserDal userDal , IMapper mapper,IFollowerDal followerDal)
         {
-            _userDal = userDal;
+            _userDal = userDal ?? throw  new NullReferenceException();
             _mapper = mapper ?? throw new NullReferenceException();
+            _followerDal = followerDal ?? throw new NullReferenceException();
         }
-        [HttpPost("/Add")]
+        [HttpPost("Add")]
         public IActionResult Add([FromBody]UserDto user)
         {
             var mappedUser = _mapper.Map<User>(user);
@@ -30,27 +33,35 @@ namespace Instagram_Clone_Backend.Controllers
 
             return Ok(mappedUser);
         }
-        [HttpGet("/GetAll")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllData()
         {
             var list = await _userDal.GetAllData();
             return Ok(list);
         }
 
-        [HttpDelete("/Delete")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> Delete([FromHeader]int id)
         {
             var deletedUser = await _userDal.DeleteByIdAsync(id);
             return deletedUser == null ? NotFound() :Ok(deletedUser);
         }
-        [HttpPut("/Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UserDto user, [FromHeader]int id)
         {
             var mappedUser = _mapper.Map<User>(user);
             var mappedUserProfile = _mapper.Map<UserProfile>(user);
             mappedUser.UserProfile = mappedUserProfile;
             var updatedUser = await _userDal.Update(mappedUser,id);
-            return updatedUser == null ? NotFound("Id Doesnt Exits in the database"): Ok(updatedUser);
+            return updatedUser == null ? NotFound("Id Doesn't Exits in the database"): Ok(updatedUser);
+        }
+
+        [HttpPost("AddFollower")]
+        public async Task<IActionResult> AddFollower([FromBody]FollowerDto follower)
+        {
+            var mappedFollower = _mapper.Map<Follower>(follower);
+            var returnedFollower = await _followerDal.AddFollower(mappedFollower);
+            return Ok(follower);
         }
     }
 }

@@ -4,6 +4,7 @@ using Instagram_Clone_Backend.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Instagram_Clone_Backend.Migrations
 {
     [DbContext(typeof(InstagramCloneContext))]
-    partial class InstagramCloneContextModelSnapshot : ModelSnapshot
+    [Migration("20230207164802_te2")]
+    partial class te2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,18 +62,10 @@ namespace Instagram_Clone_Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("FollowerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FollowerProfileId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserProfileId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FollowerProfileId");
 
                     b.HasIndex("UserProfileId");
 
@@ -230,18 +224,10 @@ namespace Instagram_Clone_Backend.Migrations
 
             modelBuilder.Entity("Instagram_Clone_Backend.Models.Follower", b =>
                 {
-                    b.HasOne("Instagram_Clone_Backend.Models.UserProfile", "FollowerProfile")
-                        .WithMany()
-                        .HasForeignKey("FollowerProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Instagram_Clone_Backend.Models.UserProfile", "UserProfile")
                         .WithMany("Followers")
                         .HasForeignKey("UserProfileId")
                         .IsRequired();
-
-                    b.Navigation("FollowerProfile");
 
                     b.Navigation("UserProfile");
                 });

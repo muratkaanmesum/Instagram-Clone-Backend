@@ -19,8 +19,17 @@ public class LikeDal:EFentityRepository<Like,InstagramCloneContext>,ILikeDal
             PostId = postId,
             UserProfileId = UserProfileId
         };
-        await context.Set<Like>().AddAsync(like);
+        await context.Likes.AddAsync(like);
         await context.SaveChangesAsync();
         return like;
+    }
+
+    public async  Task<Like> DeleteAsync(int Id)
+    {
+       await  using var context = new InstagramCloneContext();
+       var like = await context.Likes.SingleOrDefaultAsync(l => l.Id == Id);
+       context.Entry(like).State = EntityState.Deleted;
+        await context.SaveChangesAsync();
+        return like!;
     }
 }

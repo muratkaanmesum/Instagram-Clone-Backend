@@ -10,5 +10,6 @@ public class UserMapProfile:Profile
     {
         CreateMap<UserDto, User>();
         CreateMap<UserDto, UserProfile>();
+        CreateMap<FollowerDto, Follower>();
     }
 }

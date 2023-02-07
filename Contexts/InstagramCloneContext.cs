@@ -9,8 +9,9 @@ namespace Instagram_Clone_Backend.Contexts
         public DbSet<UserProfile> Profiles { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Like> Likes { get; set; }
         public DbSet<Story> Stories { get; set; }
-
+        public DbSet<Follower> Followers { get; set; }
         public InstagramCloneContext(DbContextOptions<InstagramCloneContext> options)
         {
         }
@@ -37,7 +38,19 @@ namespace Instagram_Clone_Backend.Contexts
                 .WithMany(u => u.Likes)
                 .HasForeignKey(l => l.UserProfileId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
-
+            modelBuilder.Entity<Follower>()
+                .HasOne(l => l.UserProfile)
+                .WithMany(u => u.Followers)
+                .HasForeignKey(f => f.UserProfileId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<Follower>()
+                .HasOne(f => f.FollowerProfile).WithMany(u => u.Followers)
+                .HasForeignKey(f => f.FollowerId).OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<Follower>()
+                .HasOne(f => f.UserProfile)
+                .WithMany(u => u.Followers)
+                .HasForeignKey(f => f.UserProfileId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }
