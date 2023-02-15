@@ -8,6 +8,8 @@ using Instagram_Clone_Backend.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace Instagram_Clone_Backend
 {
@@ -18,13 +20,17 @@ namespace Instagram_Clone_Backend
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the Dependincy container.
-
+            JsonSerializerOptions options = new()
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                WriteIndented = true
+            };
             builder.Services.AddControllers(o =>
             {
                 o.ReturnHttpNotAcceptable = true;
-                
-                
+
             }).AddXmlDataContractSerializerFormatters();
+
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(); // you can add name it defaults to cookies
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -40,7 +46,6 @@ namespace Instagram_Clone_Backend
             builder.Services.AddSingleton<ICommentDal, CommentDal>();
             builder.Services.AddSingleton<IFollowerDal, FollowerDal>();
             var app = builder.Build();
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

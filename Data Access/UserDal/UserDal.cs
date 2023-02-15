@@ -6,15 +6,17 @@ namespace Instagram_Clone_Backend.Data_Access.UserDal;
 
 public class UserDal : EFentityRepository<User, InstagramCloneContext>, IEFentityRepository<User>, IUserDal
 {
-    public async Task<List<User> >GetAllData()
+    public async Task<List<User>> GetAllData()
     {
         using var context = new InstagramCloneContext();
         var list = await context.Users.Include(u => u.UserProfile)
             .ThenInclude(p => p.Comments)
             .Include(u => u.UserProfile)
             .ThenInclude(p => p.Posts)
+            .Include(u => u.UserProfile)
+            .ThenInclude(p => p.Comments)
             .ToListAsync();
-            
+
         return list;
     }
 
@@ -42,5 +44,17 @@ public class UserDal : EFentityRepository<User, InstagramCloneContext>, IEFentit
         context.Entry(user).State = EntityState.Modified;
         await context.SaveChangesAsync();
         return user;
+    }
+    public async Task<User> GetByIdAsync(int id)
+    {
+        using var context = new InstagramCloneContext();
+        return await context.Users.Include(u => u.UserProfile)
+                                  .ThenInclude(p => p.Comments)
+                                  .Include(u => u.UserProfile)
+                                  .ThenInclude(p => p.Posts)
+                                  .Include(u => u.UserProfile)
+                                  .ThenInclude(p => p.Comments)
+                                  .SingleOrDefaultAsync(user => user.Id == id);
+
     }
 }

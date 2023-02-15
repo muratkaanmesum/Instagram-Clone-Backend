@@ -44,12 +44,9 @@ namespace Instagram_Clone_Backend.Contexts
                 .HasForeignKey(f => f.UserProfileId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             modelBuilder.Entity<Follower>()
-                .HasOne(f => f.FollowerProfile).WithMany(u => u.Followers)
-                .HasForeignKey(f => f.FollowerId).OnDelete(DeleteBehavior.ClientSetNull);
-            modelBuilder.Entity<Follower>()
-                .HasOne(f => f.UserProfile)
-                .WithMany(u => u.Followers)
-                .HasForeignKey(f => f.UserProfileId)
+                .HasOne(f => f.FollowerProfile)
+                .WithMany(u => u.Following)
+                .HasForeignKey(f => f.FollowerId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }

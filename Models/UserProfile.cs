@@ -12,6 +12,7 @@ namespace Instagram_Clone_Backend.Models
             Likes = new List<Like>();
             Stories = new List<Story>();
             Followers = new List<Follower>();
+            Following = new List<Follower>();
         }
         [Key]
         public int Id { get; set; }
@@ -30,7 +31,7 @@ namespace Instagram_Clone_Backend.Models
         public ICollection<Post> Posts { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Follower> Followers { get; set; }
-        public ICollection<Follower> Follows { get; set; }
+        public ICollection<Follower> Following { get; set; }
         public ICollection<Like> Likes { get; set; }
         public ICollection<Story> Stories { get; set; }
     }
