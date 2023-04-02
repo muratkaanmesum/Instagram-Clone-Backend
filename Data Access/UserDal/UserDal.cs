@@ -1,4 +1,5 @@
 ﻿using Instagram_Clone_Backend.Contexts;
+using Instagram_Clone_Backend.Dto_s;
 using Instagram_Clone_Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +37,7 @@ public class UserDal : EFentityRepository<User, InstagramCloneContext>, IEFentit
     }
     public async Task<User> Update(User user, int id)
     {
-        using var context = new InstagramCloneContext();
+      await  using var context = new InstagramCloneContext();
         bool doesExits = await DoesExitsAsync(id);
         if (doesExits == false)
             return null;
@@ -47,7 +48,7 @@ public class UserDal : EFentityRepository<User, InstagramCloneContext>, IEFentit
     }
     public async Task<User> GetByIdAsync(int id)
     {
-        using var context = new InstagramCloneContext();
+       await using var context = new InstagramCloneContext();
         return await context.Users.Include(u => u.UserProfile)
                                   .ThenInclude(p => p.Comments)
                                   .Include(u => u.UserProfile)
@@ -56,5 +57,28 @@ public class UserDal : EFentityRepository<User, InstagramCloneContext>, IEFentit
                                   .ThenInclude(p => p.Comments)
                                   .SingleOrDefaultAsync(user => user.Id == id);
 
+    }
+
+    public async Task<bool> VerifyUser(LoginDto? userInfo)
+    {
+        if (userInfo == null) return false;
+      await  using var context = new InstagramCloneContext();
+      var dbUser = await  context.Users.FirstOrDefaultAsync(user => user.Username == userInfo.Username);
+      if (dbUser == null) return false;
+      return HashingManager.VerifyPassword(userInfo.Password,dbUser.Password);
+    }
+
+    public async Task<User> RegisterUser(RegisterDto registerInfo)
+    {
+        await using var context = new InstagramCloneContext();
+        var user =await context.Users.FirstOrDefaultAsync(user => user.Username == registerInfo.Username);
+        if (user != null) return null;
+            
+        var hashedPass = HashingManager.HashPassword(registerInfo.Password, HashingManager.GenerateSalt());
+        var generatedUser = new User(registerInfo.Username, hashedPass);
+        generatedUser.UserProfile.Name = registerInfo.FullName;
+        await context.Users.AddAsync(generatedUser);
+        await context.SaveChangesAsync();
+        return generatedUser;
     }
 }

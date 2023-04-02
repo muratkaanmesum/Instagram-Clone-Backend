@@ -77,5 +77,19 @@ namespace Instagram_Clone_Backend.Controllers
             var user = await _userDal.GetByIdAsync(id);
             return Ok(user);
         }
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginUser([FromBody]LoginDto userInfo)
+        {
+            var loginAttempt = await _userDal.VerifyUser(userInfo);
+            return loginAttempt ? Ok(loginAttempt) : NotFound("User is not registered!");
+        }
+        [HttpPost("register")]
+        public async Task<IActionResult> AddUser([FromBody]RegisterDto userInfo)
+        {
+            var user =await _userDal.RegisterUser(userInfo);
+            if (user == null)
+                return BadRequest("Username already in use!");
+            return Ok(user);
+        }
     }
 }
