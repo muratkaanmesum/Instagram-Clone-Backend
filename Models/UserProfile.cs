@@ -20,10 +20,7 @@ namespace Instagram_Clone_Backend.Models
         public int UserId { get; set; }
         [Required]
         [StringLength(50)]
-        public string Name { get; set; } = string.Empty;
-        [StringLength(50)]
-        public string LastName { get; set; } = string.Empty;
-        [StringLength(200)]
+        public string FullName { get; set; } = string.Empty;
         public string? Bio { get; set; }
         public string? Email { get; set; }
         public string? Gender { get; set; }

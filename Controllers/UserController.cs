@@ -85,7 +85,7 @@ namespace Instagram_Clone_Backend.Controllers
                 return Unauthorized("Wrong username or password!");
             else
             {
-                var user = _userDal.Get(user => user.Username == userInfo.Username);
+                var user =await  _userDal.GetAsync(user => user.Username == userInfo.Username);
                 return Ok(user);
             }
         }

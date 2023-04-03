@@ -1,4 +1,5 @@
-﻿using Instagram_Clone_Backend.Contexts;
+﻿using System.Linq.Expressions;
+using Instagram_Clone_Backend.Contexts;
 using Instagram_Clone_Backend.Dto_s;
 using Instagram_Clone_Backend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -76,9 +77,20 @@ public class UserDal : EFentityRepository<User, InstagramCloneContext>, IEFentit
             
         var hashedPass = HashingManager.HashPassword(registerInfo.Password, HashingManager.GenerateSalt());
         var generatedUser = new User(registerInfo.Username, hashedPass);
-        generatedUser.UserProfile.Name = registerInfo.FullName;
+        generatedUser.UserProfile.FullName = registerInfo.FullName;
         await context.Users.AddAsync(generatedUser);
         await context.SaveChangesAsync();
         return generatedUser;
+    }
+    public async Task<User>GetAsync(Expression<Func<User, bool>> filter)
+    {
+        await using var context = new InstagramCloneContext();
+        return await context.Users.Include(u => u.UserProfile)
+                                  .ThenInclude(p => p.Comments)
+                                  .Include(u => u.UserProfile)
+                                  .ThenInclude(p => p.Posts)
+                                  .Include(u => u.UserProfile)
+                                  .ThenInclude(p => p.Comments)
+                                  .SingleOrDefaultAsync(filter);
     }
 }

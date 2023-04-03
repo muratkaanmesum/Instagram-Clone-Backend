@@ -13,6 +13,7 @@ public class EFentityRepository<TEntity,TContext>:IEFentityRepository<TEntity>
     public TEntity? Get(Expression<Func<TEntity, bool>> filter)
     {
         using var context = new TContext();
+
         return context.Set<TEntity>().SingleOrDefault(filter);
         
     }
