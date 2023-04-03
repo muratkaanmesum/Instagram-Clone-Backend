@@ -81,7 +81,13 @@ namespace Instagram_Clone_Backend.Controllers
         public async Task<IActionResult> LoginUser([FromBody]LoginDto userInfo)
         {
             var loginAttempt = await _userDal.VerifyUser(userInfo);
-            return loginAttempt ? Ok(loginAttempt) : NotFound("User is not registered!");
+            if(!loginAttempt)
+                return Unauthorized("Wrong username or password!");
+            else
+            {
+                var user = _userDal.Get(user => user.Username == userInfo.Username);
+                return Ok(user);
+            }
         }
         [HttpPost("register")]
         public async Task<IActionResult> AddUser([FromBody]RegisterDto userInfo)

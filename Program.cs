@@ -46,6 +46,12 @@ namespace Instagram_Clone_Backend
             builder.Services.AddSingleton<ICommentDal, CommentDal>();
             builder.Services.AddSingleton<IFollowerDal, FollowerDal>();
             var app = builder.Build();
+            app.UseCors(cors =>
+            {
+                cors.AllowAnyOrigin();
+                cors.AllowAnyHeader();
+                cors.AllowAnyMethod();
+            });
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
