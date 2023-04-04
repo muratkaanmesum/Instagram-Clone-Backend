@@ -20,16 +20,15 @@ namespace Instagram_Clone_Backend
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the Dependincy container.
-            JsonSerializerOptions options = new()
-            {
-                ReferenceHandler = ReferenceHandler.IgnoreCycles,
-                WriteIndented = true
-            };
             builder.Services.AddControllers(o =>
             {
                 o.ReturnHttpNotAcceptable = true;
 
-            }).AddXmlDataContractSerializerFormatters();
+            }).AddXmlDataContractSerializerFormatters().AddJsonOptions((o =>
+            {
+                o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                o.JsonSerializerOptions.WriteIndented = true;
+            }));
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(); // you can add name it defaults to cookies
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

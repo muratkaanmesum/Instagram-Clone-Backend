@@ -14,7 +14,14 @@ public class CommentDal : EFentityRepository<Comment, InstagramCloneContext>, IC
             return new List<Comment>();
         return user.Comments.ToList();
     }
-
+    public async Task<IEnumerable<Comment>> GetPostCommentsAsync(int id)
+    {
+        using var context = new InstagramCloneContext();
+       var comments =  context.Comments.Where(p=> p.PostId == id).Include(p => p.UserProfile);
+        if (comments == null)
+            return new List<Comment>();
+        return await comments.ToListAsync();
+    }
     public async Task<Comment> DeleteWithIdAsync(int id)
     {
         await using var context = new InstagramCloneContext();

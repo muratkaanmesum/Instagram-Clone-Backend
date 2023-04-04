@@ -68,6 +68,12 @@ namespace Instagram_Clone_Backend.Controllers
             var comments = await _iCommentDal.GetUserCommentAsync(id);
             return Ok(comments);
         }
+        [HttpGet("GetPostComments")]
+        public async Task<IActionResult> getPostComments([FromHeader] int id)
+        {
+            var comments = await _iCommentDal.GetPostCommentsAsync(id);
+            return Ok(comments);
+        }
         [HttpPost("AddComment")]
         public async Task<IActionResult> AddComment([FromBody] CommentDto comment, [FromHeader]int postId ,[FromHeader]int userProfileId)
         {
