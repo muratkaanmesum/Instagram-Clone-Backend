@@ -97,5 +97,11 @@ namespace Instagram_Clone_Backend.Controllers
                 return BadRequest("Username already in use!");
             return Ok(user);
         }
+        [HttpGet("getByUsername")]
+        public async Task<IActionResult> GetUserbyUsername([FromHeader]string username)
+        {
+            var user = await _userDal.GetAsync(user => user.Username == username);
+            return Ok(user);
+        }
     }
 }
