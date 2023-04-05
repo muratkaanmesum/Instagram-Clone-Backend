@@ -11,8 +11,13 @@ public class FollowerDal:EFentityRepository<Follower,InstagramCloneContext>, IFo
     {
         await  using var context = new InstagramCloneContext();
 
-        var followed = await context.Profiles.SingleOrDefaultAsync(p => p.Id == follower.UserProfileId);
+        var followed = await context.Profiles.Include(p => p.Followers).SingleOrDefaultAsync(p => p.Id == follower.UserProfileId);
         var following = await context.Profiles.SingleOrDefaultAsync(p => p.Id == follower.FollowerId);
+        if (followed == null || following == null)
+            return null;
+        var isFollowing = followed.Followers.SingleOrDefault(p => p.FollowerId == following.Id);
+        if (isFollowing != null)
+            return null;
         follower.UserProfile = followed!;
         follower.FollowerProfile= following!;
         await context.Followers.AddAsync(follower);
@@ -23,7 +28,7 @@ public class FollowerDal:EFentityRepository<Follower,InstagramCloneContext>, IFo
     public async Task<ICollection<Follower>> GetUserFollowers(int id)
     {
         await using var context = new InstagramCloneContext();
-        var profile = await context.Profiles.SingleOrDefaultAsync(profile => profile.Id == id);
+        var profile = await context.Profiles.Include(p => p.Followers).SingleOrDefaultAsync(profile => profile.Id == id);
         return profile.Followers.ToList();
     }
 

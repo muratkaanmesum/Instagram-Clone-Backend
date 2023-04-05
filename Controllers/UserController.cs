@@ -61,11 +61,13 @@ namespace Instagram_Clone_Backend.Controllers
         {
             var mappedFollower = _mapper.Map<Follower>(follower);
             var returnedFollower = await _followerDal.AddFollower(mappedFollower);
-            return Ok();
+            if (returnedFollower == null)
+                return BadRequest("User is already followed");
+            return Ok(returnedFollower);
         }
 
         [HttpGet("GetUserFollowers")]
-        public async Task<IActionResult> GetUserFollowers(int id)
+        public async Task<IActionResult> GetUserFollowers([FromHeader]int id)
         {
 
             var followers = await _followerDal.GetUserFollowers(id);
@@ -102,6 +104,11 @@ namespace Instagram_Clone_Backend.Controllers
         {
             var user = await _userDal.GetAsync(user => user.Username == username);
             return Ok(user);
+        }
+        [HttpGet("getAllFollowers")]
+        public IActionResult GetAllFollowers()
+        {
+            return Ok(_followerDal.GetList(null));
         }
     }
 }
