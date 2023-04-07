@@ -18,12 +18,13 @@ namespace Instagram_Clone_Backend.Models
         public int Id { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; }
+        public virtual User User { get; set; }
         [Required]
         [StringLength(50)]
         public string FullName { get; set; } = string.Empty;
-        public string? Bio { get; set; }
-        public string? Email { get; set; }
-        public string? Gender { get; set; }
+        public string? Bio { get; set; } = string.Empty;
+        public string? Email { get; set; } = string.Empty;
+        public string? Gender { get; set; } = string.Empty;
         public string? ImageUrl { get; set; } = string.Empty;
         public ICollection<Post> Posts { get; set; }
         public ICollection<Comment> Comments { get; set; }
