@@ -6,4 +6,5 @@ public interface IFollowerDal:IEFentityRepository<Follower>
 {
     public Task<Follower> AddFollower(Follower follower);
     public Task<ICollection<GetUserFollowerDto>> GetUserFollowers(int id);
+    public Task<ICollection<GetUserFollowerDto>> GetUserFollowing(int id);
 }

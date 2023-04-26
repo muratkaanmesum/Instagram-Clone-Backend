@@ -73,6 +73,12 @@ namespace Instagram_Clone_Backend.Controllers
             var followers = await _followerDal.GetUserFollowers(id);
             return Ok(followers);
         }
+        [HttpGet("GetUserFollowing")]
+        public async Task<IActionResult> GetUserFollowing([FromHeader]int id)
+        {
+            var following = await _followerDal.GetUserFollowing(id);
+            return Ok(following);
+        }
         [HttpGet("getUserById")]
         public async Task<IActionResult> GetUserById(int id)
         {

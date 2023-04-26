@@ -45,6 +45,23 @@ public class FollowerDal:EFentityRepository<Follower,InstagramCloneContext>, IFo
         }
         return list;
     }
+    public async Task<ICollection<GetUserFollowerDto>> GetUserFollowing(int id)
+    {
+  await using var context = new InstagramCloneContext();
+  var profile = await context.Profiles.Include(p => p.Following).ThenInclude(p => p.UserProfile).ThenInclude(p => p.User).SingleOrDefaultAsync(t => t.Id == id);
+        var list = new List<GetUserFollowerDto>();
+        foreach (var following in profile!.Following)
+        {
+            list.Add(new GetUserFollowerDto()
+            {
+                 FollowerId = following .UserProfileId,
+                 FullName = following .UserProfile.FullName,
+                PictureUrl = "dummy",
+                Username = following .UserProfile.User.Username,
+            });
+        }
+        return list;
+    }
 
 
 }
